@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 import streamlit as st
 
 from sklearn import datasets
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
@@ -13,7 +13,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.decomposition import PCA
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 st.title("ML Model Master")
 
@@ -124,9 +124,16 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
-acc = accuracy_score(y_test, y_pred)
-st.write(f"classifier = {classifier_name}")
-st.write(f"accuracy = {acc}")
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average="weighted")
+recall = recall_score(y_test, y_pred, average="weighted")
+f1 = f1_score(y_test, y_pred, average="weighted")
+
+st.write(f"Classifier = {classifier_name}")
+st.write(f"Accuracy Score = {accuracy}")
+st.write(f"Precision Score= {precision}")
+st.write(f"Recall Score= {recall}")
+st.write(f"F1 Score = {f1}")
 
 # Plot
 pca = PCA(2)
