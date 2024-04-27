@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 import streamlit as st
 
@@ -10,22 +11,17 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.decomposition import PCA
+# from sklearn.decomposition import PCA
 
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import (accuracy_score, precision_score, recall_score,
+                             f1_score, confusion_matrix, classification_report)
 
 st.title("ML Model Master")
 
-st.write("""
-## Explore different classifiers and their optimized hyperparameters
-### Which one is the best?
+st.subheader("""
+Explore different classifiers and their optimized hyperparameters
 """)
-
-dataset_name = st.sidebar.selectbox("Select Dataset", ("Iris", "Breast Cancer", "Wine Dataset"))
-
-classifier_name = st.sidebar.selectbox("Select Classifier", ("Logistic Regression", "KNN", "SVM", "Decision Tree",
-                                                             "Random Forest", "Gradient Boosting", "Naive Bayes"))
 
 
 def get_dataset(dataset_name):
@@ -41,11 +37,6 @@ def get_dataset(dataset_name):
     X = dataset.data
     y = dataset.target
     return X, y
-
-
-X, y = get_dataset(dataset_name)
-st.write("Shape of dataset", X.shape)
-st.write("Number of classes", len(np.unique(y)))
 
 
 def add_parameter_ui(clf_name):
@@ -85,12 +76,9 @@ def add_parameter_ui(clf_name):
     return params
 
 
-params = add_parameter_ui(classifier_name)
-
-
 def get_classifier(clf_name, params):
     if clf_name == "Logistic Regression":
-        clf = LogisticRegression(C = params["C"])
+        clf = LogisticRegression(C=params["C"], max_iter=2000)
 
     elif clf_name == "KNN":
         clf = KNeighborsClassifier(n_neighbors=params["K"])
@@ -115,37 +103,49 @@ def get_classifier(clf_name, params):
     return clf
 
 
+# Setup (Dataset and Classifier options)
+dataset_name = st.sidebar.selectbox("Select Dataset", ("Iris", "Breast Cancer", "Wine Dataset"))
+
+classifier_name = st.sidebar.selectbox("Select Classifier", ("Logistic Regression", "KNN", "SVM", "Decision Tree",
+                                                             "Random Forest", "Gradient Boosting", "Naive Bayes"))
+params = add_parameter_ui(classifier_name)
+
+X, y = get_dataset(dataset_name)
 clf = get_classifier(classifier_name, params)
 
-# Classification
-
+# Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 
+# Train the classifier and predict on the test data
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
+st.sidebar.write("Shape of Dataset :", X.shape)
+st.sidebar.write("Number of Classes : ", len(np.unique(y)))
 
+# Calculate and display performance metrics
 accuracy = accuracy_score(y_test, y_pred)
 precision = precision_score(y_test, y_pred, average="weighted")
 recall = recall_score(y_test, y_pred, average="weighted")
 f1 = f1_score(y_test, y_pred, average="weighted")
 
-st.write(f"Classifier = {classifier_name}")
-st.write(f"Accuracy Score = {accuracy}")
-st.write(f"Precision Score= {precision}")
-st.write(f"Recall Score= {recall}")
-st.write(f"F1 Score = {f1}")
+st.sidebar.write(f"Classifier      : {classifier_name}")
+st.sidebar.write(f"Accuracy Score  : {accuracy}")
+st.sidebar.write(f"Precision Score : {precision}")
+st.sidebar.write(f"Recall Score    : {recall}")
+st.sidebar.write(f"F1 Score        : {f1}")
 
-# Plot
-pca = PCA(2)
-X_projected = pca.fit_transform(X)
+# Display classification report
+st.write("#### Classification Report: ####")
+report = classification_report(y_test, y_pred)
+st.text(report)
 
-x1 = X_projected[:, 0]
-x2 = X_projected[:, 1]
-fig = plt.figure()
-plt.scatter(x1, x2, c=y, alpha=0.8, cmap="viridis")
-plt.xlabel("Principal Component 1")
-plt.ylabel("Principal Component 2")
-plt.colorbar()
+# Calculate confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred)
 
-# plt.show()
+# Plot the confusion matrix as a heatmap
+st.write("#### Confusion Matrix: ####")
+fig, ax = plt.subplots()
+sns.heatmap(conf_matrix, annot=True, cmap="Blues", fmt='d', ax=ax)
+ax.set_xlabel("Predicted label")
+ax.set_ylabel("Actual label")
 st.pyplot(fig)
