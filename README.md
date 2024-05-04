@@ -1,8 +1,8 @@
-# ML-Model-Master
+# ML-Model-Explorer
 
 ## Overview
 
-ML Model Master is an interactive Streamlit web application that empowers you to explore various machine learning classifiers and optimize their hyperparameters. Experiment with popular datasets and classifiers to understand their impact on classification tasks.
+ML Model Explorer is an interactive Streamlit web application that empowers you to explore various machine learning classifiers and optimize their hyperparameters. Experiment with popular datasets and classifiers to understand their impact on classification tasks.
 
 ## Features
 
@@ -15,7 +15,7 @@ ML Model Master is an interactive Streamlit web application that empowers you to
 
 ## Getting Started
 
-1. **Clone the Repository:** Use ```git clone https://github.com/your-username/ML-Model-Master.git``` to download the code.
+1. **Clone the Repository:** Use ```git clone https://github.com/your-username/ML-Model-Explorer.git``` to download the code.
 2. **Install Dependencies:** Navigate to the project directory and run ```pip install -r requirements.txt``` to install essential libraries (Streamlit, scikit-learn, seaborn, and others).
 3. **Run the App:** Execute ```streamlit run main.py``` (or the appropriate command for your Streamlit setup) to launch the application in your web browser.
 
