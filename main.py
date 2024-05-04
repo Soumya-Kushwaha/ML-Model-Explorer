@@ -11,12 +11,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_score,
-                             confusion_matrix, classification_report, roc_curve, auc)
+from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, classification_report, roc_curve, auc)
 
 st.markdown("<h1 style='color: #ff6600;'>ML MODEL EXPLORER</h1>", unsafe_allow_html=True)
-st.markdown("<h3 style='font-size: 20px;'>Explore different classifiers and their optimized hyperparameters</h3>",
-            unsafe_allow_html=True)
+st.markdown("<h3 style='font-size: 20px;'>Explore different classifiers and their optimized hyperparameters</h3>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
 
@@ -71,11 +69,9 @@ def get_classifier(clf_name, params):
     elif clf_name == "Decision Tree":
         clf = DecisionTreeClassifier(max_depth=params["max_depth"])
     elif clf_name == "Random Forest":
-        clf = RandomForestClassifier(n_estimators=params["n_estimators"],
-                                     max_depth=params["max_depth"], random_state=1234)
+        clf = RandomForestClassifier(n_estimators=params["n_estimators"], max_depth=params["max_depth"], random_state=1234)
     elif clf_name == "Gradient Boosting":
-        clf = GradientBoostingClassifier(n_estimators=params["n_estimators"],
-                                         max_depth=params["max_depth"], random_state=1234)
+        clf = GradientBoostingClassifier(n_estimators=params["n_estimators"], max_depth=params["max_depth"], random_state=1234)
     elif clf_name == "Naive Bayes":
         clf = GaussianNB()
     return clf
@@ -127,29 +123,7 @@ def show_confusion_matrix(y_test, y_pred):
 
 
 # ROC Curve
-def show_roc_curve(clf, X_test, y_test, y_pred_proba):
-    st.write("<h4 style='color: #3366ff;'>ROC Curve:</h4>", unsafe_allow_html=True)
-    y_prob = clf.predict_proba(X_test)
-    n_classes = len(np.unique(y_test))
-
-    if n_classes == 2:  # Binary classification
-        fpr, tpr, _ = roc_curve(y_test, y_prob[:, 1])
-        roc_auc = auc(fpr, tpr)
-        plt.figure(figsize=(5, 3))
-        plt.plot(fpr, tpr, color='blue', lw=2, label='ROC curve (area = %0.2f)' % roc_auc)
-        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-        plt.xlim([0.0, 1.0])
-        plt.ylim([0.0, 1.05])
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title('Receiver Operating Characteristic (ROC) Curve')
-        plt.legend(loc="lower right")
-        st.pyplot(plt.gcf())
-    else:  # Multi-class classification
-        st.write("Cannot plot ROC curve as it is not a binary classification problem.")
-
-
-def roc_curvee(clf, X_test, y_test):
+def roc_curve(clf, X_test, y_test):
     if hasattr(clf, "predict_proba"):
         st.write("<h4 style='color: #3366ff;'>ROC Curve:</h4>", unsafe_allow_html=True)
         y_prob = clf.predict_proba(X_test)
@@ -174,9 +148,8 @@ def roc_curvee(clf, X_test, y_test):
 
 # Setup (Dataset and Classifier options)
 dataset_name = st.sidebar.selectbox("Select Dataset", ["Iris", "Breast Cancer", "Wine Dataset"])
+classifier_name = st.sidebar.selectbox("Select Classifier", ["Logistic Regression", "KNN", "SVM", "Decision Tree", "Random Forest", "Gradient Boosting", "Naive Bayes"])
 
-classifier_name = st.sidebar.selectbox("Select Classifier", ["Logistic Regression", "KNN", "SVM", "Decision Tree",
-                                                             "Random Forest", "Gradient Boosting", "Naive Bayes"])
 params = add_parameter_ui(classifier_name)
 submit_button = st.sidebar.button("Predict")
 
@@ -197,44 +170,4 @@ if submit_button:
 
     show_classification_report(y_test, y_pred)
     show_confusion_matrix(y_test, y_pred)
-    roc_curvee(clf, X_test, y_test)
-
-# X, y = get_dataset(dataset_name)
-# clf = get_classifier(classifier_name, params)
-#
-# # Split the dataset into training and testing sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
-#
-# # Train the classifier and predict on the test data
-# clf.fit(X_train, y_train)
-# y_pred = clf.predict(X_test)
-# st.sidebar.write("Shape of Dataset :", X.shape)
-# st.sidebar.write("Number of Classes : ", len(np.unique(y)))
-#
-# # Calculate and display performance metrics
-# accuracy = accuracy_score(y_test, y_pred)
-# precision = precision_score(y_test, y_pred, average="weighted")
-# recall = recall_score(y_test, y_pred, average="weighted")
-# f1 = f1_score(y_test, y_pred, average="weighted")
-#
-# st.sidebar.write(f"Classifier      : {classifier_name}")
-# st.sidebar.write(f"Accuracy Score  : {accuracy}")
-# st.sidebar.write(f"Precision Score : {precision}")
-# st.sidebar.write(f"Recall Score    : {recall}")
-# st.sidebar.write(f"F1 Score        : {f1}")
-#
-# # Display classification report
-# st.write("#### Classification Report: ####")
-# report = classification_report(y_test, y_pred)
-# st.text(report)
-#
-# # Calculate confusion matrix
-# conf_matrix = confusion_matrix(y_test, y_pred)
-#
-# # Plot the confusion matrix as a heatmap
-# st.write("#### Confusion Matrix: ####")
-# fig, ax = plt.subplots()
-# sns.heatmap(conf_matrix, annot=True, cmap="Blues", fmt='d', ax=ax)
-# ax.set_xlabel("Predicted label")
-# ax.set_ylabel("Actual label")
-# st.pyplot(fig)
+    roc_curve(clf, X_test, y_test)
