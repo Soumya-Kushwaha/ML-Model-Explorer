@@ -4,6 +4,8 @@
 
 ML Model Explorer is an interactive Streamlit web application that empowers you to explore various machine learning classifiers and optimize their hyperparameters. Experiment with popular datasets and classifiers to understand their impact on classification tasks.
 
+Try it out live at [ml-model-explorer.streamlit.app](https://ml-model-explorer.streamlit.app).
+
 ## Features
 
 - **Dataset Exploration:** Choose from popular datasets like Iris, Breast Cancer, and Wine.
@@ -15,6 +17,12 @@ ML Model Explorer is an interactive Streamlit web application that empowers you 
 - **ROC Curve:** For binary classification tasks, visualize the ROC curve and the area under the curve (AUC).
 
 ## Getting Started
+
+### Using the Live App
+
+- Visit [ml-model-explorer.streamlit.app](https://ml-model-explorer.streamlit.app) to explore the app online.
+
+### Running Locally
 
 1. **Clone the Repository:** Clone the repository using the following command:
 
@@ -34,13 +42,9 @@ ML Model Explorer is an interactive Streamlit web application that empowers you 
     streamlit run main.py
     ```
 
-## Deployment
-
-Deployment instructions and guidelines will be provided in future updates.
-
 ## Contributing
 
-We welcome contributions to this project! If you are interested in contributing, please follow these steps:
+We welcome contributions to this project! To contribute, follow these steps:
 
 1. Fork the repository.
 2. Create a new branch for your changes (`git checkout -b feature/your-feature`).
@@ -48,10 +52,18 @@ We welcome contributions to this project! If you are interested in contributing,
 4. Push your changes to your branch (`git push origin feature/your-feature`).
 5. Submit a pull request for review.
 
+For more detailed guidelines, see our [Contributing Guidelines](CONTRIBUTING.md).
+
 ## License
 
 This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details.
 
+## Code of Conduct
+
+Please review our [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
+
 ## Contact
 
 For questions, feedback, or contributions, please open an issue in the repository or reach out directly.
+
+Happy exploring!
