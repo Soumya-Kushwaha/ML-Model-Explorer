@@ -63,7 +63,7 @@ pip install -r requirements.txt
 
 3. Launch the application:
 ```bash
-streamlit run main.py
+streamlit run src/main.py
 ```
 
 ## Dependencies
